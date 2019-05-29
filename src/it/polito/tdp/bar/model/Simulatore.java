@@ -17,11 +17,6 @@ public class Simulatore {
 	// Stato del mondo
 		private List<Evento> eventi;
 		
-		private int tavoliDaDieci = 2 ;
-		private int tavoliDaOtto = 4 ;
-		private int tavoliDaSei = 4 ;
-		private int tavoliDaQuattro = 5 ;
-		
 	// Variabili interne
 		private Random rand = new Random();
 		private Duration T_ARRIVAL = Duration.ofMinutes(rand.nextInt(10)+1);
@@ -49,6 +44,27 @@ public class Simulatore {
 				
 				oraArrivo = oraArrivo.plus(T_ARRIVAL);
 			}
+		}
+		
+		public void run() {
+
+			while (!queue.isEmpty()) {
+				Evento ev = queue.poll();
+				
+				switch (ev.getTipo()) {
+				case ARRIVO_GRUPPO:
+					queue.add(new Evento(ev.getNumEvento(), ev.getTempo(), ev.getTipo()));
+					
+					break;
+					
+				case USCITA:
+					queue.add(new Evento (ev.getNumEvento(), ev.getTempo(), ev.getTipo()));
+					
+					break;
+				}
+			}
+			
+			
 		}
 		
 }
